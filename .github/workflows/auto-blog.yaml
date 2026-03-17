@@ -1,0 +1,22 @@
+name: Auto Blog
+
+on:
+  schedule:
+    - cron: "0 16 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: echo "<h1>New Blog</h1>" > blog/auto.html
+
+      - run: |
+          git config user.name "bot"
+          git config user.email "bot@email.com"
+          git add .
+          git commit -m "auto blog" || echo "no changes"
+          git push
