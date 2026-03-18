@@ -82,7 +82,7 @@
         list.innerHTML = posts.map(post => `
           <article class="news-card">
             <a class="news-card__image-wrap" href="blog/${post.filename}">
-              <img class="news-card__image" src="blog/${post.image}" alt="${post.title}">
+             <img class="news-card__image" src="${post.image}" alt="${post.title}">
             </a>
             <div class="news-card__body">
               <p class="blog-date">${post.date}</p>
