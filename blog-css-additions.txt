@@ -1,0 +1,12 @@
+/* Blog page extras */
+.blog-hero { min-height: auto; }
+.blog-card .blog-card-content { padding: 10px 6px 6px; }
+.blog-date {
+  color: gold;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+.blog-article { line-height: 1.8; }
+.blog-article h2 { margin-top: 28px; }

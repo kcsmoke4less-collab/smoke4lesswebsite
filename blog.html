@@ -1,1 +1,92 @@
-Coming Soon
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smoke 4 Less Blog | Smoke Shop in Martin City Kansas City, MO</title>
+  <meta name="description" content="Read daily blog posts from Smoke 4 Less about smoke shop products in Martin City Kansas City, MO." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://smoke4lesskc.com/blog.html" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-bar">
+      <div class="brand">
+        <img src="images/logo.png" alt="Smoke 4 Less Logo" class="logo" />
+        <div>
+          <h1>Smoke 4 Less</h1>
+          <p class="tagline">Martin City Kansas City Smoke Shop</p>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html#products">Products</a>
+        <a href="blog.html" class="call-btn">Blog</a>
+        <a href="https://www.google.com/maps/dir/?api=1&destination=13608+Washington+St+Kansas+City+MO+64145" target="_blank" rel="noopener noreferrer">Directions</a>
+        <a href="tel:18162161111" class="call-btn">Call Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero blog-hero">
+      <div class="container">
+        <span class="badge">Fresh Daily • 16:00 UTC</span>
+        <h2>Smoke 4 Less Blog</h2>
+        <p>Daily blog posts about smoke shop products, shopping tips, and new arrivals for Martin City Kansas City, MO.</p>
+        <div class="hero-buttons">
+          <a href="index.html" class="btn btn-dark">Back to Home</a>
+          <a href="tel:18162161111" class="btn btn-light">Call Store</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="products-section">
+      <div class="container">
+        <div class="section-heading">
+          <h2>Latest Blog Posts</h2>
+          <p>New posts are generated automatically every day at 16:00 UTC. Posts older than 60 days are removed automatically.</p>
+        </div>
+        <div id="blog-list" class="products-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><h3>Smoke 4 Less</h3><p>Smoke Shop Kansas City | Vape Shop Kansas City</p></div>
+      <div><h4>Store Info</h4><p>13608 Washington St, Kansas City, MO 64145</p><p>(816) 216-1111</p></div>
+      <div><h4>Popular Searches</h4><p>Smoke Shop Kansas City</p><p>Vape Shop Kansas City</p><p>Kratom Kansas City</p></div>
+    </div>
+    <div class="footer-bottom"><p>&copy; 2026 Smoke 4 Less</p></div>
+  </footer>
+
+  <script>
+    async function loadBlogPosts() {
+      const list = document.getElementById("blog-list");
+      try {
+        const res = await fetch("blog/manifest.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("manifest missing");
+        const posts = await res.json();
+        if (!posts.length) {
+          list.innerHTML = '<div class="product-card"><div class="blog-card-content"><h3>No blog posts yet</h3><p>Automatic blog posts will appear here after the workflow runs.</p></div></div>';
+          return;
+        }
+        list.innerHTML = posts.map(post => `
+          <article class="product-card blog-card">
+            <div class="blog-card-content">
+              <p class="blog-date">${post.date}</p>
+              <h3>${post.title}</h3>
+              <p>${post.excerpt}</p>
+              <a class="review-link" href="blog/${post.filename}">Read More</a>
+            </div>
+          </article>
+        `).join("");
+      } catch (e) {
+        list.innerHTML = '<div class="product-card"><div class="blog-card-content"><h3>No blog posts yet</h3><p>Automatic blog posts will appear here after the workflow runs.</p></div></div>';
+      }
+    }
+    loadBlogPosts();
+  </script>
+</body>
+</html>
