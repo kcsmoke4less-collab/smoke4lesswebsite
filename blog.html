@@ -8,6 +8,15 @@
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://smoke4lesskc.com/blog.html" />
   <link rel="stylesheet" href="styles.css" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Smoke 4 Less Blog",
+    "url": "https://smoke4lesskc.com/blog.html",
+    "description": "Daily blog posts from Smoke 4 Less about smoke shop products in Martin City Kansas City, MO."
+  }
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -31,7 +40,8 @@
   <main>
     <section class="hero blog-hero">
       <div class="container">
-       <h2>Smoke 4 Less Blog</h2>
+        <span class="badge">Fresh Daily • 16:00 UTC</span>
+        <h2>Smoke 4 Less Blog</h2>
         <p>Daily blog posts about smoke shop products, shopping tips, and new arrivals for Martin City Kansas City, MO.</p>
         <div class="hero-buttons">
           <a href="index.html" class="btn btn-dark">Back to Home</a>
@@ -44,8 +54,9 @@
       <div class="container">
         <div class="section-heading">
           <h2>Latest Blog Posts</h2>
-          </div>
-        <div id="blog-list" class="products-grid"></div>
+          <p>New posts are generated automatically every day at 16:00 UTC. Posts older than 60 days are removed automatically.</p>
+        </div>
+        <div id="blog-list" class="news-grid"></div>
       </div>
     </section>
   </main>
@@ -67,12 +78,15 @@
         if (!res.ok) throw new Error("manifest missing");
         const posts = await res.json();
         if (!posts.length) {
-          list.innerHTML = '<div class="product-card"><div class="blog-card-content"><h3>No blog posts yet</h3><p>Automatic blog posts will appear here after the workflow runs.</p></div></div>';
+          list.innerHTML = '<article class="news-card"><div class="news-card__body"><p class="blog-date">No posts yet</p><h3>Automatic blog posts will appear here after the workflow runs.</h3></div></article>';
           return;
         }
         list.innerHTML = posts.map(post => `
-          <article class="product-card blog-card">
-            <div class="blog-card-content">
+          <article class="news-card">
+            <a class="news-card__image-wrap" href="blog/${post.filename}">
+              <img class="news-card__image" src="blog/${post.image}" alt="${post.title}">
+            </a>
+            <div class="news-card__body">
               <p class="blog-date">${post.date}</p>
               <h3>${post.title}</h3>
               <p>${post.excerpt}</p>
@@ -81,7 +95,7 @@
           </article>
         `).join("");
       } catch (e) {
-        list.innerHTML = '<div class="product-card"><div class="blog-card-content"><h3>No blog posts yet</h3><p>Automatic blog posts will appear here after the workflow runs.</p></div></div>';
+        list.innerHTML = '<article class="news-card"><div class="news-card__body"><p class="blog-date">No posts yet</p><h3>Automatic blog posts will appear here after the workflow runs.</h3></div></article>';
       }
     }
     loadBlogPosts();
