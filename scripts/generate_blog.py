@@ -14,6 +14,21 @@ ADDRESS = "13608 Washington St, Kansas City, MO 64145"
 PHONE = "(816) 216-1111"
 GBP = "https://share.google/iJc83uCYrp9FU4gzd"
 
+IMAGE_MAP = {
+    "Vapes & Disposables": "../images/vapes.png",
+    "Cigars & Wraps": "../images/cigars.png",
+    "Hookah & Shisha": "../images/hookah.png",
+    "Kratom": "../images/kratom.png",
+    "THCA Flower": "../images/thca.png",
+    "Gummies": "../images/gummies.png",
+    "Detox Products": "../images/detox.png",
+    "Grinders": "../images/grinders.png",
+    "Glass": "../images/glass.png",
+    "Rolling Papers": "../images/papers.png",
+    "Accessories": "../images/accessories.png",
+    "Vaporizers": "../images/vaporizer.png"
+}
+
 def slugify(text):
     text = text.lower()
     text = re.sub(r"[^a-z0-9\s-]", "", text)
@@ -44,7 +59,9 @@ def pick_topic():
 def build_post(topic):
     title = topic["title"]
     excerpt = f"{title} - visit Smoke 4 Less, a smoke shop in Martin City Kansas City, MO, at 13608 Washington St, Kansas City, MO 64145."
+    image = IMAGE_MAP.get(topic["category"], "../images/logo.png")
     content_html = f'''
+    <img class="blog-featured-image" src="{image}" alt="{title}">
     <p>If you are looking for a <strong>smoke shop in Martin City Kansas City</strong>, Smoke 4 Less offers a convenient local place to browse {topic["category"].lower()}, new arrivals, and everyday smoke shop essentials.</p>
     <h2>Why local shoppers search for {topic["category"]}</h2>
     <p>People searching for a <strong>smoke shop Kansas City</strong> or a <strong>vape shop Kansas City</strong> often want a clean store, good selection, helpful staff, and products they can see in person before they buy. Local shopping guides help customers compare options and make faster decisions.</p>
@@ -56,9 +73,10 @@ def build_post(topic):
     <p>For directions, search Smoke 4 Less in Google Maps or visit our Google Business listing. Our store serves shoppers looking for a smoke shop, vape shop, glass, wraps, hookah, gummies, vaporizers, and accessories in Kansas City, MO.</p>
     <p>This post is part of our daily local content series for Martin City Kansas City, MO.</p>
     '''
-    return title, excerpt, content_html
+    return title, excerpt, content_html, image
 
-def build_html(title, excerpt, content_html, filename):
+def build_html(title, excerpt, content_html, filename, image):
+    image_absolute = image.replace("../", "https://smoke4lesskc.com/")
     return f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -75,6 +93,11 @@ def build_html(title, excerpt, content_html, filename):
     "@type": "BlogPosting",
     "headline": "{title}",
     "description": "{excerpt}",
+    "image": "{image_absolute}",
+    "author": {{
+      "@type": "Organization",
+      "name": "{STORE_NAME}"
+    }},
     "publisher": {{
       "@type": "Organization",
       "name": "{STORE_NAME}",
@@ -84,6 +107,32 @@ def build_html(title, excerpt, content_html, filename):
       }}
     }},
     "mainEntityOfPage": "https://smoke4lesskc.com/blog/{filename}"
+  }}
+  </script>
+  <script type="application/ld+json">
+  {{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://smoke4lesskc.com/index.html"
+      }},
+      {{
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Blog",
+        "item": "https://smoke4lesskc.com/blog.html"
+      }},
+      {{
+        "@type": "ListItem",
+        "position": 3,
+        "name": "{title}",
+        "item": "https://smoke4lesskc.com/blog/{filename}"
+      }}
+    ]
   }}
   </script>
 </head>
@@ -103,7 +152,7 @@ def build_html(title, excerpt, content_html, filename):
     </div>
   </header>
   <main>
-    <section class="hero blog-hero">
+    <section class="hero blog-hero compact-blog-hero">
       <div class="container">
         <span class="badge">Daily Blog</span>
         <h2>{title}</h2>
@@ -148,10 +197,10 @@ def prune_posts(posts):
 def main():
     BLOG_DIR.mkdir(exist_ok=True)
     topic = pick_topic()
-    title, excerpt, content_html = build_post(topic)
+    title, excerpt, content_html, image = build_post(topic)
     now = datetime.now(timezone.utc)
     filename = slugify(now.strftime("%Y-%m-%d") + "-" + title) + ".html"
-    html = build_html(title, excerpt, content_html, filename)
+    html = build_html(title, excerpt, content_html, filename, image)
     (BLOG_DIR / filename).write_text(html, encoding="utf-8")
 
     posts = load_json(MANIFEST_FILE, [])
@@ -161,7 +210,8 @@ def main():
         "excerpt": excerpt,
         "filename": filename,
         "date": now.strftime("%b %d, %Y"),
-        "created_at": now.isoformat()
+        "created_at": now.isoformat(),
+        "image": image.replace("../", "")
     })
     posts = posts[:60]
     save_json(MANIFEST_FILE, posts)
