@@ -1,6 +1,66 @@
 /* Blog page extras */
 .blog-hero { min-height: auto; }
-.blog-card .blog-card-content { padding: 10px 6px 6px; }
+.compact-blog-hero {
+  min-height: auto !important;
+  padding: 36px 20px 18px !important;
+}
+.compact-blog-hero .container {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.compact-blog-hero h2 {
+  margin-bottom: 10px !important;
+}
+.compact-blog-hero p {
+  margin-bottom: 10px !important;
+}
+.compact-blog-hero .badge {
+  margin-bottom: 10px !important;
+}
+.compact-blog-hero + .products-section {
+  margin-top: 0 !important;
+  padding-top: 20px !important;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.news-card {
+  background: rgba(20,20,20,0.92);
+  border: 1px solid rgba(255,215,0,0.14);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.28);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255,215,0,0.35);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.34);
+}
+
+.news-card__image-wrap {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #111;
+}
+
+.news-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.news-card__body {
+  padding: 18px;
+}
+
 .blog-date {
   color: gold;
   font-size: 12px;
@@ -8,5 +68,35 @@
   letter-spacing: 1px;
   margin-bottom: 10px;
 }
-.blog-article { line-height: 1.8; }
-.blog-article h2 { margin-top: 28px; }
+
+.blog-card .blog-card-content { padding: 10px 6px 6px; }
+
+.blog-article {
+  line-height: 1.8;
+}
+
+.blog-article h2 {
+  margin-top: 28px;
+}
+
+.blog-featured-image {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 14px;
+  display: block;
+  margin: 0 0 22px 0;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.25);
+}
+
+@media (max-width: 992px) {
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .news-grid {
+    grid-template-columns: 1fr;
+  }
+}
