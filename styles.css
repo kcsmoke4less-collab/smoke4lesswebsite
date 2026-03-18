@@ -435,3 +435,36 @@ body::after {
 .btn-dark {
   box-shadow: 0 0 18px rgba(255, 215, 0, 0.18);
 }
+
+/* FIX BLOG HERO GAP */
+.blog-hero {
+    min-height: auto !important;
+    padding: 40px 20px 20px !important;
+}
+
+/* Reduce space inside hero */
+.blog-hero .container {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Reduce heading spacing */
+.blog-hero h2 {
+    margin-bottom: 10px !important;
+}
+
+/* Reduce paragraph spacing */
+.blog-hero p {
+    margin-bottom: 10px !important;
+}
+
+/* Reduce badge spacing */
+.blog-hero .badge {
+    margin-bottom: 10px !important;
+}
+
+/* Remove extra space below hero */
+.blog-hero + .products-section {
+    margin-top: 0 !important;
+    padding-top: 20px !important;
+}
