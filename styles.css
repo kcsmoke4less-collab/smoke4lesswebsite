@@ -390,3 +390,48 @@ body::after {
     transform: translateY(0px) scale(1);
   }
 }
+
+/* ===== Real moving smoke canvas ===== */
+#smoke-canvas {
+  position: fixed;
+  top: 72px; /* starts below header */
+  left: 0;
+  width: 100%;
+  height: calc(100% - 72px);
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+/* Keep all site content above smoke */
+.site-header,
+.hero,
+.products-section,
+.contact-section,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Make sections slightly transparent so smoke is visible */
+.hero,
+.products-section,
+.contact-section {
+  background: transparent;
+}
+
+.hero-info-card,
+.product-card,
+.contact-card,
+.map-card {
+  background: rgba(20, 20, 20, 0.82);
+  backdrop-filter: blur(4px);
+}
+
+/* Optional stronger glow */
+.hero-image,
+.product-card:hover,
+.call-btn,
+.btn-dark {
+  box-shadow: 0 0 18px rgba(255, 215, 0, 0.18);
+}
