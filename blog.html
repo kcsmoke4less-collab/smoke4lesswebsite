@@ -81,9 +81,16 @@
         }
         list.innerHTML = posts.map(post => `
           <article class="news-card">
-            <a class="news-card__image-wrap" href="blog/${post.filename}">
-             <img class="news-card__image" src="${post.image}" alt="${post.title}">
-            </a>
+          list.innerHTML = posts.map(post => `
+  <article class="news-card">
+    <div class="news-card__body">
+      <p class="blog-date">${post.date}</p>
+      <h3>${post.title}</h3>
+      <p>${post.excerpt}</p>
+      <a class="review-link" href="blog/${post.filename}">Read More</a>
+    </div>
+  </article>
+`).join("");
             <div class="news-card__body">
               <p class="blog-date">${post.date}</p>
               <h3>${post.title}</h3>
