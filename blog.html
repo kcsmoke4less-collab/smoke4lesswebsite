@@ -40,7 +40,7 @@
   <main>
     <section class="hero blog-hero">
       <div class="container">
-      <h2>Smoke 4 Less Blog</h2>
+        <h2>Smoke 4 Less Blog</h2>
         <p>Daily blog posts about smoke shop products, shopping tips, and new arrivals for Martin City Kansas City, MO.</p>
         <div class="hero-buttons">
           <a href="index.html" class="btn btn-dark">Back to Home</a>
@@ -53,7 +53,7 @@
       <div class="container">
         <div class="section-heading">
           <h2>Latest Blog Posts</h2>
-         </div>
+        </div>
         <div id="blog-list" class="news-grid"></div>
       </div>
     </section>
@@ -71,26 +71,32 @@
   <script>
     async function loadBlogPosts() {
       const list = document.getElementById("blog-list");
+
       try {
-        const res = await fetch("blog/manifest.json", { cache: "no-store" });
-        if (!res.ok) throw new Error("manifest missing");
+        const res = await fetch("./blog/manifest.json?v=" + Date.now(), {
+          cache: "no-store"
+        });
+
+        if (!res.ok) {
+          throw new Error("manifest missing");
+        }
+
         const posts = await res.json();
+
         if (!posts.length) {
-          list.innerHTML = '<article class="news-card"><div class="news-card__body"><p class="blog-date">No posts yet</p><h3>Automatic blog posts will appear here after the workflow runs.</h3></div></article>';
+          list.innerHTML = `
+            <article class="news-card">
+              <div class="news-card__body">
+                <p class="blog-date">No posts yet</p>
+                <h3>Automatic blog posts will appear here after the workflow runs.</h3>
+              </div>
+            </article>
+          `;
           return;
         }
+
         list.innerHTML = posts.map(post => `
           <article class="news-card">
-          list.innerHTML = posts.map(post => `
-  <article class="news-card">
-    <div class="news-card__body">
-      <p class="blog-date">${post.date}</p>
-      <h3>${post.title}</h3>
-      <p>${post.excerpt}</p>
-      <a class="review-link" href="blog/${post.filename}">Read More</a>
-    </div>
-  </article>
-`).join("");
             <div class="news-card__body">
               <p class="blog-date">${post.date}</p>
               <h3>${post.title}</h3>
@@ -99,10 +105,20 @@
             </div>
           </article>
         `).join("");
+
       } catch (e) {
-        list.innerHTML = '<article class="news-card"><div class="news-card__body"><p class="blog-date">No posts yet</p><h3>Automatic blog posts will appear here after the workflow runs.</h3></div></article>';
+        console.error(e);
+        list.innerHTML = `
+          <article class="news-card">
+            <div class="news-card__body">
+              <p class="blog-date">Unable to load posts</p>
+              <h3>Please check blog/manifest.json and GitHub Pages deployment.</h3>
+            </div>
+          </article>
+        `;
       }
     }
+
     loadBlogPosts();
   </script>
 </body>
